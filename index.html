@@ -6,391 +6,711 @@
 <title>TYMAA</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101816;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f2e6c8}
-body{touch-action:none}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#0b1512;
+  color:#fff;
+}
 
 #game{
-position:fixed;inset:0;
-background:
-linear-gradient(rgba(13,23,19,.08),rgba(13,23,19,.25)),
-linear-gradient(160deg,#77945c 0 34%,#436d79 34% 64%,#718b54 64%);
-overflow:hidden;
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  background:#17251c;
 }
 
-.river{
-position:absolute;
-width:145%;
-height:31%;
-left:-22%;
-top:37%;
-transform:rotate(-8deg);
-background:linear-gradient(180deg,#527f89,#285966 55%,#16424e);
-box-shadow:inset 0 8px 20px rgba(255,255,255,.14);
+/* НАСТОЯЩАЯ КАРТА */
+
+#world{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(5,15,10,.06),
+      rgba(5,15,10,.18)
+    ),
+    url("0B5ABD81-E33F-4E88-BD35-0051278A3EEF.png");
+
+  background-size:cover;
+  background-position:center;
+  transform:scale(1.03);
 }
 
-.wave{
-position:absolute;
-height:2px;
-background:rgba(224,239,232,.28);
-border-radius:50%;
-animation:water 4s linear infinite;
-}
-@keyframes water{from{transform:translateX(-40px)}to{transform:translateX(80px)}}
+/* CINEMATIC LIGHT */
 
-.tree{
-position:absolute;width:18px;height:34px;
-background:#253e29;
-clip-path:polygon(50% 0,100% 65%,72% 63%,100% 100%,0 100%,28% 63%,0 65%);
-filter:drop-shadow(3px 5px 3px rgba(0,0,0,.25))
-}
-
-.urasa{
-position:absolute;left:7%;bottom:15%;
-width:100px;height:92px;
-background:linear-gradient(100deg,#9a8057,#d0b987);
-clip-path:polygon(50% 0,93% 88%,80% 100%,20% 100%,7% 88%);
-filter:drop-shadow(8px 10px 8px rgba(0,0,0,.35))
-}
-.urasa:after{
-content:"";position:absolute;
-width:22px;height:34px;left:39px;bottom:0;background:#30271d
+#light{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      circle at 28% 18%,
+      rgba(255,226,150,.18),
+      transparent 30%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.03),
+      rgba(0,0,0,.30)
+    );
 }
 
-.serge{
-position:absolute;left:22%;bottom:20%;width:8px;height:92px;background:#563c24
-}
-.serge:before{
-content:"";position:absolute;left:-19px;top:18px;width:46px;height:5px;background:#563c24
+/* TOP HUD */
+
+#hud{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  padding:
+    max(22px,env(safe-area-inset-top))
+    22px
+    18px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(5,12,8,.72),
+      transparent
+    );
+
+  z-index:20;
 }
 
-.ore{
-position:absolute;right:12%;top:27%;
-width:52px;height:42px;
-background:linear-gradient(135deg,#c08d4b,#745338);
-clip-path:polygon(10% 75%,26% 22%,58% 6%,95% 55%,78% 100%,32% 92%);
-filter:drop-shadow(0 0 12px rgba(237,192,95,.6));
-animation:pulse 1.8s ease-in-out infinite
+.logo{
+  font-family:Georgia,serif;
+  letter-spacing:.20em;
+  font-size:30px;
+  color:#f0d08a;
+  text-shadow:0 2px 15px rgba(0,0,0,.6);
 }
-@keyframes pulse{50%{filter:drop-shadow(0 0 22px rgba(255,207,101,.95))}}
 
-.person{
-position:absolute;left:27%;bottom:20%;
-width:16px;height:31px;background:#2d2119;border-radius:8px 8px 3px 3px;
-transition:all .9s linear;
-z-index:8
+.subtitle{
+  margin-top:5px;
+  font-size:11px;
+  letter-spacing:.22em;
+  color:rgba(255,244,210,.72);
 }
-.person:before{
-content:"";position:absolute;width:11px;height:11px;border-radius:50%;
-background:#b98a62;top:-8px;left:2px
+
+.resources{
+  display:flex;
+  gap:8px;
 }
+
+.resource{
+  padding:10px 13px;
+  border-radius:18px;
+  background:rgba(9,18,13,.72);
+  border:1px solid rgba(240,208,138,.28);
+  backdrop-filter:blur(12px);
+  font-weight:700;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
+}
+
+/* MISSION */
+
+#mission{
+  position:absolute;
+  left:18px;
+  top:125px;
+  width:min(315px,72vw);
+
+  padding:19px 20px;
+
+  border-radius:20px;
+
+  background:rgba(8,17,12,.79);
+  border:1px solid rgba(240,208,138,.30);
+
+  backdrop-filter:blur(16px);
+
+  box-shadow:
+    0 16px 45px rgba(0,0,0,.28);
+
+  z-index:15;
+}
+
+.eyebrow{
+  color:#e9c978;
+  font-size:11px;
+  letter-spacing:.22em;
+  margin-bottom:9px;
+}
+
+#missionTitle{
+  font-family:Georgia,serif;
+  font-size:23px;
+  line-height:1.12;
+  margin-bottom:8px;
+}
+
+#missionText{
+  color:rgba(255,247,225,.76);
+  font-size:13px;
+  line-height:1.45;
+}
+
+/* GAME OBJECTS */
 
 .node{
-position:absolute;width:27px;height:27px;border-radius:50%;
-border:2px solid rgba(249,218,144,.85);
-background:rgba(82,58,30,.55);
-box-shadow:0 0 0 6px rgba(244,202,108,.08);
-z-index:20
+  position:absolute;
+  width:44px;
+  height:44px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+
+  border:2px solid rgba(247,213,132,.95);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,218,130,.26) 0 28%,
+      rgba(10,20,15,.76) 30%
+    );
+
+  box-shadow:
+    0 0 0 7px rgba(245,207,116,.12),
+    0 5px 16px rgba(0,0,0,.35);
+
+  z-index:8;
 }
 
-#n1{left:31%;top:54%}
-#n2{left:42%;top:51%}
-#n3{left:52%;top:48%}
-#n4{left:62%;top:45%}
-#n5{left:71%;top:42%}
-
-.beam{
-position:absolute;
-height:13px;
-background:linear-gradient(#8b623b,#5f3d22);
-border-radius:8px;
-transform-origin:0 50%;
-z-index:15;
-box-shadow:0 4px 5px rgba(0,0,0,.4)
-}
-.beam:after{
-content:"";position:absolute;left:4px;right:4px;top:3px;height:2px;background:rgba(236,193,128,.25)
+.node.active{
+  background:#e8bd60;
+  box-shadow:
+    0 0 0 9px rgba(245,207,116,.22),
+    0 0 30px rgba(245,207,116,.55);
 }
 
-.topbar{
-position:absolute;left:0;right:0;top:0;height:76px;
-padding:14px 16px;
-display:flex;justify-content:space-between;align-items:start;
-background:linear-gradient(rgba(9,15,13,.84),rgba(9,15,13,.25));
-z-index:50
-}
-.logo{font-family:Georgia,serif;font-size:25px;letter-spacing:5px;color:#e2c07a}
-.sub{font-size:10px;color:#c9b88f;margin-top:3px}
+#n1{left:35%;top:60%}
+#n2{left:43%;top:56%}
+#n3{left:51%;top:52%}
+#n4{left:59%;top:48%}
+#n5{left:67%;top:44%}
 
-.resources{display:flex;gap:7px}
-.res{
-background:rgba(21,25,20,.72);
-border:1px solid rgba(225,195,125,.2);
-padding:7px 10px;border-radius:10px;font-size:12px
-}
+/* BRIDGE */
 
-.mission{
-position:absolute;left:15px;top:94px;
-width:205px;padding:14px;
-background:rgba(12,18,16,.76);
-border:1px solid rgba(229,198,126,.2);
-border-radius:13px;
-z-index:50;
-backdrop-filter:blur(7px)
-}
-.mission small{color:#daba72;letter-spacing:2px}
-.mission b{display:block;font-size:14px;margin:7px 0;line-height:1.4}
-.mission span{font-size:11px;color:#cbbd9f}
+.log{
+  position:absolute;
+  height:15px;
+  transform-origin:left center;
 
-.toolbar{
-position:absolute;left:50%;bottom:18px;
-transform:translateX(-50%);
-display:flex;gap:8px;z-index:50
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      #a46d35,
+      #6e411e
+    );
+
+  box-shadow:
+    0 5px 10px rgba(0,0,0,.35);
+
+  z-index:6;
 }
 
-button{
-border:1px solid rgba(233,202,132,.22);
-background:rgba(18,22,18,.88);
-color:#eadcb9;
-padding:12px 15px;border-radius:13px;
-font-weight:700;font-size:12px
+/* TARGET */
+
+#target{
+  position:absolute;
+  left:77%;
+  top:32%;
+
+  width:58px;
+  height:58px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+
+  border:2px solid rgba(241,207,126,.8);
+
+  box-shadow:
+    0 0 0 10px rgba(239,202,112,.12),
+    0 0 35px rgba(239,202,112,.24);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:27px;
+
+  z-index:8;
 }
-button.active,button.primary{
-background:linear-gradient(#dfbd70,#aa7734);
-color:#1b160f
+
+/* CHARACTER */
+
+#person{
+  position:absolute;
+  left:27%;
+  top:73%;
+
+  width:24px;
+  height:42px;
+
+  z-index:9;
+
+  transition:
+    left .7s cubic-bezier(.2,.8,.2,1),
+    top .7s cubic-bezier(.2,.8,.2,1);
+}
+
+.head{
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:#c99368;
+  margin:auto;
+}
+
+.body{
+  width:20px;
+  height:29px;
+  border-radius:9px 9px 5px 5px;
+  background:#2b1b12;
+  margin:-1px auto 0;
+}
+
+/* BOTTOM */
+
+#bottom{
+  position:absolute;
+  bottom:max(20px,env(safe-area-inset-bottom));
+  left:50%;
+  transform:translateX(-50%);
+
+  width:calc(100% - 36px);
+  max-width:560px;
+
+  z-index:25;
 }
 
 #message{
-position:absolute;left:50%;top:50%;
-transform:translate(-50%,-50%) scale(.9);
-background:rgba(9,15,13,.9);
-border:1px solid rgba(231,199,126,.25);
-padding:20px 26px;border-radius:17px;
-font-weight:800;font-size:19px;text-align:center;
-opacity:0;pointer-events:none;z-index:100;
-transition:.3s
-}
-#message.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
-#message small{display:block;font-size:11px;color:#c8b995;font-weight:400;margin-top:7px}
+  margin:0 auto 11px;
+  width:max-content;
+  max-width:100%;
 
-.hint{
-position:absolute;bottom:82px;left:50%;
-transform:translateX(-50%);
-background:rgba(9,15,13,.7);padding:8px 13px;border-radius:20px;
-font-size:11px;z-index:50;white-space:nowrap
+  padding:10px 16px;
+
+  border-radius:20px;
+
+  background:rgba(6,15,10,.80);
+  border:1px solid rgba(240,208,138,.22);
+
+  backdrop-filter:blur(12px);
+
+  color:#f5e7c0;
+  font-size:13px;
+
+  box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.controls{
+  display:flex;
+  gap:9px;
+}
+
+button{
+  border:0;
+  min-height:52px;
+  border-radius:17px;
+
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:.06em;
+
+  cursor:pointer;
+}
+
+#reset{
+  width:58px;
+  color:#f3e6c7;
+  background:rgba(7,16,11,.88);
+  border:1px solid rgba(240,208,138,.25);
+}
+
+#build{
+  flex:1;
+  color:#1e180d;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f0cf7c,
+      #c58a32
+    );
+
+  box-shadow:
+    0 7px 22px rgba(0,0,0,.28);
+}
+
+#build:active{
+  transform:scale(.98);
+}
+
+/* START SCREEN */
+
+#intro{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      rgba(4,10,7,.30),
+      rgba(4,10,7,.70)
+    );
+
+  backdrop-filter:blur(2px);
+
+  z-index:100;
+}
+
+.introCard{
+  width:min(88%,430px);
+  padding:30px 25px;
+
+  border-radius:27px;
+
+  background:rgba(8,17,12,.84);
+  border:1px solid rgba(240,208,138,.32);
+
+  text-align:center;
+
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.45);
+}
+
+.introLogo{
+  font-family:Georgia,serif;
+  color:#efd084;
+  font-size:38px;
+  letter-spacing:.22em;
+}
+
+.introTitle{
+  font-family:Georgia,serif;
+  font-size:25px;
+  margin:22px 0 10px;
+}
+
+.introText{
+  color:rgba(255,245,220,.72);
+  font-size:14px;
+  line-height:1.55;
+  margin-bottom:23px;
+}
+
+#start{
+  width:100%;
+  background:linear-gradient(#f0d181,#c78c36);
+  color:#20190c;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .logo{font-size:25px}
+
+  #mission{
+    top:105px;
+    width:67vw;
+    padding:16px;
+  }
+
+  #missionTitle{
+    font-size:19px;
+  }
+
+  #missionText{
+    font-size:12px;
+  }
+
+  .node{
+    width:37px;
+    height:37px;
+  }
+
 }
 </style>
 </head>
 
 <body>
+
 <div id="game">
 
-<div class="river">
-<div class="wave" style="left:10%;top:25%;width:120px"></div>
-<div class="wave" style="left:38%;top:55%;width:160px;animation-delay:-2s"></div>
-<div class="wave" style="left:67%;top:35%;width:100px;animation-delay:-1s"></div>
-</div>
+  <div id="world"></div>
+  <div id="light"></div>
 
-<div class="urasa"></div>
-<div class="serge"></div>
-<div class="ore"></div>
-<div class="person" id="person"></div>
+  <div id="hud">
 
-<div class="tree" style="left:3%;top:30%"></div>
-<div class="tree" style="left:9%;top:23%"></div>
-<div class="tree" style="right:4%;bottom:19%"></div>
-<div class="tree" style="right:10%;bottom:13%"></div>
-<div class="tree" style="right:18%;top:18%"></div>
+    <div>
+      <div class="logo">TYMAA</div>
+      <div class="subtitle">АЛАС · ЛЕТО · ДЕНЬ 1</div>
+    </div>
 
-<div class="node" id="n1"></div>
-<div class="node" id="n2"></div>
-<div class="node" id="n3"></div>
-<div class="node" id="n4"></div>
-<div class="node" id="n5"></div>
+    <div class="resources">
+      <div class="resource">🪵 <span id="wood">5</span></div>
+      <div class="resource">👥 8</div>
+    </div>
 
-<div class="topbar">
-<div>
-<div class="logo">TYMAA</div>
-<div class="sub">АЛАС · ЛЕТО · ДЕНЬ 1</div>
-</div>
+  </div>
 
-<div class="resources">
-<div class="res">🪵 <b id="wood">6</b></div>
-<div class="res">👥 8</div>
-</div>
-</div>
+  <div id="mission">
 
-<div class="mission">
-<small>ПЕРВАЯ ЦЕЛЬ</small>
-<b>Доберись до рудного камня</b>
-<span>Соедини опоры брёвнами и построй переправу.</span>
-</div>
+    <div class="eyebrow">ПЕРВАЯ ЭКСПЕДИЦИЯ</div>
 
-<div class="hint" id="hint">
-Коснись одной опоры, затем другой
-</div>
+    <div id="missionTitle">
+      Перейди реку
+    </div>
 
-<div class="toolbar">
-<button id="undo">↶</button>
-<button id="reset">СБРОС</button>
-<button class="primary" id="test">ИСПЫТАТЬ</button>
-</div>
+    <div id="missionText">
+      Соедини пять опор и построй переправу к рудному берегу.
+    </div>
 
-<div id="message">
-<span id="msgTitle"></span>
-<small id="msgText"></small>
-</div>
+  </div>
+
+  <div id="target">⛏️</div>
+
+  <div class="node" id="n1" data-i="0"></div>
+  <div class="node" id="n2" data-i="1"></div>
+  <div class="node" id="n3" data-i="2"></div>
+  <div class="node" id="n4" data-i="3"></div>
+  <div class="node" id="n5" data-i="4"></div>
+
+  <div id="person">
+    <div class="head"></div>
+    <div class="body"></div>
+  </div>
+
+  <div id="bottom">
+
+    <div id="message">
+      Коснись первой опоры
+    </div>
+
+    <div class="controls">
+      <button id="reset">↶</button>
+      <button id="build">ПОСТРОИТЬ ПЕРЕПРАВУ</button>
+    </div>
+
+  </div>
+
+  <div id="intro">
+
+    <div class="introCard">
+
+      <div class="introLogo">TYMAA</div>
+
+      <div class="introTitle">
+        Земля начинается с пути
+      </div>
+
+      <div class="introText">
+        Перед тобой дикая территория.
+        За рекой находится первый рудный камень.
+        Построй переправу и открой путь поселению.
+      </div>
+
+      <button id="start">
+        НАЧАТЬ ЭКСПЕДИЦИЮ
+      </button>
+
+    </div>
+
+  </div>
 
 </div>
 
 <script>
-const nodes=[...document.querySelectorAll(".node")]
-let first=null
-let beams=[]
-let wood=6
-let testing=false
 
-function center(el){
- const r=el.getBoundingClientRect()
- return{x:r.left+r.width/2,y:r.top+r.height/2}
+const nodes=[...document.querySelectorAll(".node")];
+const message=document.getElementById("message");
+const wood=document.getElementById("wood");
+const person=document.getElementById("person");
+
+let selected=[];
+let logs=[];
+let resources=5;
+let finished=false;
+
+document.getElementById("start").onclick=()=>{
+  document.getElementById("intro").style.display="none";
+};
+
+nodes.forEach((node,index)=>{
+
+  node.addEventListener("click",()=>{
+
+    if(finished) return;
+
+    if(selected.includes(index)) return;
+
+    if(index!==selected.length){
+      message.textContent="Строй переправу по порядку";
+      return;
+    }
+
+    node.classList.add("active");
+    selected.push(index);
+
+    if(selected.length===1){
+      message.textContent="Хорошо. Теперь следующая опора.";
+    }else{
+      createLog(
+        nodes[selected.length-2],
+        node
+      );
+
+      resources--;
+      wood.textContent=resources;
+
+      message.textContent=
+        selected.length<5
+        ?"Продолжай строить переправу"
+        :"Переправа готова. Испытай её.";
+    }
+
+  });
+
+});
+
+function createLog(a,b){
+
+  const ar=a.getBoundingClientRect();
+  const br=b.getBoundingClientRect();
+
+  const game=document
+    .getElementById("game")
+    .getBoundingClientRect();
+
+  const ax=ar.left+ar.width/2-game.left;
+  const ay=ar.top+ar.height/2-game.top;
+
+  const bx=br.left+br.width/2-game.left;
+  const by=br.top+br.height/2-game.top;
+
+  const dx=bx-ax;
+  const dy=by-ay;
+
+  const length=Math.sqrt(dx*dx+dy*dy);
+  const angle=Math.atan2(dy,dx)*180/Math.PI;
+
+  const log=document.createElement("div");
+
+  log.className="log";
+
+  log.style.left=ax+"px";
+  log.style.top=(ay-7)+"px";
+  log.style.width=length+"px";
+  log.style.transform=`rotate(${angle}deg)`;
+
+  document.getElementById("game").appendChild(log);
+
+  logs.push(log);
 }
 
-function connect(a,b){
- if(wood<=0)return
- if(beams.some(q=>(q.a===a&&q.b===b)||(q.a===b&&q.b===a)))return
+document.getElementById("build").onclick=()=>{
 
- const A=center(a),B=center(b)
- const dx=B.x-A.x,dy=B.y-A.y
- const len=Math.hypot(dx,dy)
-
- if(len>190)return
-
- const beam=document.createElement("div")
- beam.className="beam"
- beam.style.left=A.x+"px"
- beam.style.top=(A.y-6)+"px"
- beam.style.width=len+"px"
- beam.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`
- document.getElementById("game").appendChild(beam)
-
- beams.push({a,b,beam})
- wood--
- document.getElementById("wood").textContent=wood
-}
-
-nodes.forEach(n=>{
- n.addEventListener("pointerdown",()=>{
-  if(testing)return
-
-  if(!first){
-   first=n
-   n.style.background="rgba(219,176,85,.9)"
-   document.getElementById("hint").textContent="Теперь выбери вторую опору"
-  }else{
-   if(first!==n)connect(first,n)
-   first.style.background=""
-   first=null
-   document.getElementById("hint").textContent="Продолжай строить или нажми ИСПЫТАТЬ"
-  }
- })
-})
-
-document.getElementById("undo").onclick=()=>{
- if(testing||!beams.length)return
- const b=beams.pop()
- b.beam.remove()
- wood++
- document.getElementById("wood").textContent=wood
-}
-
-function clearBridge(){
- beams.forEach(b=>b.beam.remove())
- beams=[]
- wood=6
- document.getElementById("wood").textContent=wood
- first=null
- testing=false
-
- const p=document.getElementById("person")
- p.style.left="27%"
- p.style.bottom="20%"
- p.style.top=""
-}
-
-document.getElementById("reset").onclick=clearBridge
-
-function hasPath(){
- const adj=new Map(nodes.map(n=>[n,[]]))
-
- beams.forEach(b=>{
-  adj.get(b.a).push(b.b)
-  adj.get(b.b).push(b.a)
- })
-
- const q=[nodes[0]]
- const seen=new Set([nodes[0]])
-
- while(q.length){
-  const n=q.shift()
-  if(n===nodes[4])return true
-
-  adj.get(n).forEach(v=>{
-   if(!seen.has(v)){
-    seen.add(v)
-    q.push(v)
-   }
-  })
- }
- return false
-}
-
-function show(title,text){
- const box=document.getElementById("message")
- document.getElementById("msgTitle").textContent=title
- document.getElementById("msgText").textContent=text
- box.classList.add("show")
- setTimeout(()=>box.classList.remove("show"),2200)
-}
-
-document.getElementById("test").onclick=()=>{
- if(testing)return
- testing=true
-
- if(!hasPath()){
-  show("МОСТ НЕ ГОТОВ","Переправа должна соединить оба берега.")
-  testing=false
-  return
- }
-
- const p=document.getElementById("person")
-
- const steps=[
-  {left:"31%",top:"54%"},
-  {left:"42%",top:"51%"},
-  {left:"52%",top:"48%"},
-  {left:"62%",top:"45%"},
-  {left:"71%",top:"42%"},
-  {left:"82%",top:"29%"}
- ]
-
- let i=0
-
- function move(){
-  if(i>=steps.length){
-   show("РУДНЫЙ КАМЕНЬ ДОБЫТ","Открыта новая технология: ВЕРЁВКА")
-   document.getElementById("hint").textContent="✓ Первая территория освоена"
-   return
+  if(selected.length<5){
+    message.textContent=
+      "Сначала соедини все пять опор";
+    return;
   }
 
-  p.style.left=steps[i].left
-  p.style.top=steps[i].top
-  p.style.bottom="auto"
-  i++
-  setTimeout(move,700)
- }
+  if(finished) return;
 
- move()
-}
+  finished=true;
+
+  message.textContent=
+    "Переправа выдержала. Экспедиция движется к руде.";
+
+  const route=[
+    [35,60],
+    [43,56],
+    [51,52],
+    [59,48],
+    [67,44],
+    [77,32]
+  ];
+
+  route.forEach((p,i)=>{
+
+    setTimeout(()=>{
+
+      person.style.left=p[0]+"%";
+      person.style.top=p[1]+"%";
+
+      if(i===route.length-1){
+
+        setTimeout(()=>{
+
+          message.textContent=
+            "✓ Новый берег открыт";
+
+          document.getElementById("missionTitle")
+            .textContent="Рудный берег";
+
+          document.getElementById("missionText")
+            .textContent=
+            "Первая территория освоена. Здесь начнётся развитие поселения.";
+
+        },600);
+
+      }
+
+    },i*720);
+
+  });
+
+};
+
+document.getElementById("reset").onclick=()=>{
+
+  selected=[];
+  resources=5;
+  finished=false;
+
+  wood.textContent=resources;
+
+  nodes.forEach(n=>n.classList.remove("active"));
+
+  logs.forEach(l=>l.remove());
+  logs=[];
+
+  person.style.left="27%";
+  person.style.top="73%";
+
+  message.textContent="Коснись первой опоры";
+
+  document.getElementById("missionTitle")
+    .textContent="Перейди реку";
+
+  document.getElementById("missionText")
+    .textContent=
+    "Соедини пять опор и построй переправу к рудному берегу.";
+
+};
+
 </script>
+
 </body>
 </html>
